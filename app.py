@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, url_for
 import studentDAO
 from flask import jsonify
 
@@ -21,6 +21,17 @@ def get_student_id(student_id):
         return jsonify(student)
     else:
         return jsonify({"error": "Student not found"}), 404
+
+@app.route("/add_student", methods=["POST"])
+def add_student():
+    name = request.form.get("name")
+    age = request.form.get("age")
+    if name and age:
+        studentDAO.create((name, age))
+        return redirect(url_for("index"))
+    else:
+        return jsonify({"error": "Name and age are required"}), 400
+
 
 
 if __name__ == "__main__":

@@ -1,0 +1,11 @@
+.student-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: none;
+    border-radius: 10px;
+}
+
+.student-card:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12) !important;
+    border-left: 4px solid #007bff; 
+}
