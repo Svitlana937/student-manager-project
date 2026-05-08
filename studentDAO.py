@@ -1,8 +1,9 @@
 from db_config import get_db_connection
+import mysql.connector
 
 def get_all_students():
     db = get_db_connection()
-    cursor = db.cursor()
+    cursor = db.cursor(dictionary=True)
     sql = "SELECT * FROM student"
     cursor.execute(sql)
     result = cursor.fetchall()
@@ -12,7 +13,7 @@ def get_all_students():
 
 def get_student_by_id(student_id):
     db = get_db_connection()
-    cursor = db.cursor()
+    cursor = db.cursor(dictionary=True)
     sql = "SELECT * FROM student WHERE id = %s"
     values = (student_id,)
     cursor.execute(sql, values)
