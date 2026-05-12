@@ -21,20 +21,27 @@
             </div>
         </div>
 
-        <div class="row">
-            {% for student in students %}
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-sm student-card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ student.name }}</h5>
-                        <p class="card-text text-muted">Student ID: {{ student.id }}</p>
-                        <p class="card-text">Age: <strong>{{ student.age }}</strong></p>
-                        <a href="/api/students/{{ student.id }}" class="btn btn-outline-primary btn-sm">View JSON</a>
-                    </div>
-                </div>
+    <div class="row">
+    {% for student in students %} <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title text-primary">{{ student.name }}</h5>
+                <p class="card-text">
+                    <strong>ID:</strong> {{ student.id }} <br>
+                    <strong>Age:</strong> {{ student.age }}
+                </p>
             </div>
-            {% endfor %}
+            <div class="card-footer bg-transparent border-top-0">
+                <a href="{{ url_for('delete_student', student_id=student.id) }}" 
+                   class="btn btn-outline-danger btn-sm w-100">Delete Student</a>
+            </div>
         </div>
+    </div>
+    {% endfor %} </div>
+
+{% if not students %}
+    <p class="text-center text-muted w-100">Empty list. Add the first student!</p>
+{% endif %}
         {% if not students %}
     <p class="text-center text-muted">Empty list. Add the first student!</p>
 {% endif %}
