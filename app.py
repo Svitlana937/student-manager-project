@@ -79,15 +79,33 @@ def add_student():
     new_student = studentDAO.add_student(name, age)
     return jsonify({"message": "Student added successfully", "student": new_student})
 
-# PUT route to update student information
-@app.route("/api/update_student/<int:student_id>", methods=["PUT"])
-def update_student_api(student_id):
-    data = request.get_json()
-    name = data.get("name")
-    age = data.get("age")
 
-    studentDAO.update_student(student_id, name, age)
-    return jsonify({"message": "Student updated successfully"})
+
+@app.route("/edit_student/<int:student_id>")
+def edit_student(student_id):
+    student = studentDAO.get_student_by_id(student_id)    
+    return render_template("edit_student.html", student=student)
+
+
+# PUT route to update student information
+@app.route("/update_student_api/<int:student_id>", methods=["POST", "PUT"])
+def update_student_api(student_id):
+    # If form data is sent, update the student and redirect to index
+    if request.form:
+        name = request.form.get("name")
+        age = request.form.get("age")
+        studentDAO.update_student(student_id, name, age)
+        return redirect(url_for("index"))    
+    
+    # If JSON data is sent, update the student and return a JSON response
+    data = request.get_json(silent=True)
+    if data:
+        name = data.get("name")
+        age = data.get("age")
+        studentDAO.update_student(student_id, name, age)
+        return jsonify({"message": "Student updated via JSON"}), 200
+
+    return "No data provided", 400
 
     
 def get_student(student_id):
