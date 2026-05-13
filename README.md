@@ -132,6 +132,11 @@ student-manager-project/
 - **POST/PUT** `/update_student_api/<id>` - Update student (form or JSON)
 - **GET** `/delete_student/<id>` - Delete student
 
+## External APIs
+- **DiceBear Avatars**
+  - **Endpoint**: `https://api.dicebear.com/9.x/adventurer/svg?seed={student_name}`
+  - **Description**: Generates a student avatar from an internal avatar service when creating a student
+
 ## References
 
 All references used in this code are documented below with their exact purpose:
