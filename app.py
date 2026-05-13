@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 import studentDAO
+# Reference: Flask session handling
+# https://runestone.academy/ns/books/published/webfundamentals/Flask/sessions.html
 from flask_session import Session
 
 # Reference: Create quick Flask app
@@ -29,23 +31,28 @@ def index():
     if not session.get("name"):
         return render_template("login.html")
 
+    students = studentDAO.get_all_students()
+    return render_template("index.html", students=students, username=session.get("name"))
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        # Record the user name in session
-        session["name"] = request.form.get("name")
-        return redirect("/")
+        username = request.form.get("name")
+        password = request.form.get("password")
+
+        user = studentDAO.check_user(username, password)
+        if user:
+            # Record the user name in session
+            session["name"] = username
+            return redirect("/")
     return render_template("login.html")
 
 @app.route("/logout")
 def logout():
     # Clear the username from session
     session["name"] = None
-    return redirect("/")
-
-
-
-
+    return redirect(url_for("login"))
 
 
 
@@ -53,13 +60,7 @@ def logout():
 # Reference: Flask routing 
 # https://flask.palletsprojects.com/en/stable/quickstart/#routing
 
-# Main page route
-@app.route("/")
-def index():
-    students = studentDAO.get_all_students()
-    return render_template("index.html", students=students)
-
-# POST route to add a new student
+# Route to add student
 @app.route("/api/add_student", methods=["POST"])
 def add_student_api():
     data = request.get_json()
@@ -68,16 +69,6 @@ def add_student_api():
 
     new_student = studentDAO.add_student(name, age)
     return jsonify({"message": "Student added successfully", "student": new_student})
-
-# Form to add student
-@app.route("/add_student", methods=["POST"])
-def add_student():
-    name = request.form.get("name")
-    age = request.form.get("age")
-
-    studentDAO = studentDAO.StudentDAO()
-
-    return "Name and age are required"
 
 # PUT route to update student information
 @app.route("/api/update_student/<int:student_id>", methods=["PUT"])

@@ -1,3 +1,5 @@
+<!-- Bootstrap via CDN https://getbootstrap.com/-->
+
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -22,7 +24,16 @@
         </div>
 
     <div class="row">
-    {% for student in students %} <div class="col-md-4 mb-4">
+    {% for student in students %} 
+    <div class="text-center mb-3">
+        <!-- Reference: DiceBear Avatars -->    
+        <!-- https://www.dicebear.com/how-to-use/http-api/-->
+        <!--https://www.dicebear.com/styles/adventurer/-->
+    <img src="https://api.dicebear.com/9.x/adventurer/svg?seed={{ student.name }}" 
+         alt="Avatar" 
+         style="width: 80px; height: 80px; border: 1px solid #ddd; border-radius: 50%;">
+    </div>
+    <div class="col-md-4 mb-4">
         <div class="card h-100 shadow-sm">
             <div class="card-body">
                 <h5 class="card-title text-primary">{{ student.name }}</h5>
