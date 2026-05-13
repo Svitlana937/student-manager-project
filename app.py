@@ -61,11 +61,20 @@ def logout():
 # https://flask.palletsprojects.com/en/stable/quickstart/#routing
 
 # Route to add student
-@app.route("/api/add_student", methods=["POST"])
-def add_student_api():
-    data = request.get_json()
-    name = data.get("name")
-    age = data.get("age")
+@app.route("/add_student", methods=["POST"])
+def add_student():
+    if request.is_json:
+        data = request.get_json()
+        name = data.get("name")
+        age = data.get("age")
+    else:
+        name = request.form.get("name")
+        age = request.form.get("age")
+
+    studentDAO.add_student(name, age)
+
+    if not request.is_json:
+        return redirect(url_for("index"))
 
     new_student = studentDAO.add_student(name, age)
     return jsonify({"message": "Student added successfully", "student": new_student})

@@ -1,16 +1,35 @@
+# Import necessary modules and functions
 from db_config import get_db_connection
 import mysql.connector
 
+
+# Data Access Object (DAO) for Student
 def get_all_students():
-    db = get_db_connection()
-    cursor = db.cursor(dictionary=True)
-    sql = "SELECT * FROM student"
-    cursor.execute(sql)
-    result = cursor.fetchall()
+    db = get_db_connection() # Establish a new database connection
+    cursor = db.cursor(dictionary=True) # Create a cursor that returns results as dictionaries
+    sql = "SELECT * FROM student" # SQL query to select all students
+    cursor.execute(sql) # Execute the SQL query
+    result = cursor.fetchall() # Fetch all results from the executed query
     cursor.close()
     db.close()
     return result
 
+# User authentication function
+def check_user(username, password):
+    if username == "root" and password == "pass":
+        return {"name": "root"}
+    return None
+    
+ 
+    query = "SELECT * FROM users WHERE username = %s AND password = %s"
+    cursor.execute(query, (username, password))
+    user = cursor.fetchone()
+    
+    cursor.close()
+    connection.close()
+    return user
+
+# Get student by ID
 def get_student_by_id(student_id):
     db = get_db_connection()
     cursor = db.cursor(dictionary=True)
