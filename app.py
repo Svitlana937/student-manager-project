@@ -1,10 +1,50 @@
-from flask import Flask, render_template, request, url_for, redirect, jsonify
+from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 import studentDAO
-
+from flask_session import Session
 
 # Reference: Create quick Flask app
 # https://flask.palletsprojects.com/en/2.3.x/quickstart/
 app = Flask(__name__)
+
+# Authentication
+# Reference: 
+#https://www.geeksforgeeks.org/python/how-to-use-flask-session-in-python-flask/
+
+                   # Configuration 
+app.config["SESSION_PERMANENT"] = False     # Sessions expire when the browser is closed
+app.config["SESSION_TYPE"] = "filesystem"     # Store session data in files
+
+# Initialize Flask-Session
+Session(app)
+
+# Defining Routes for Session Handling
+# Reference: Flask session handling
+# https://www.geeksforgeeks.org/python/how-to-use-flask-session-in-python-flask/
+@app.route("/")
+def index():
+    # If no username in session, redirect to login
+    if not session.get("name"):
+        return redirect("/login")
+    return render_template("index.html")
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        # Record the user name in session
+        session["name"] = request.form.get("name")
+        return redirect("/")
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    # Clear the username from session
+    session["name"] = None
+    return redirect("/")
+
+
+
+
+
 
 
 #------- ROUTES --------
