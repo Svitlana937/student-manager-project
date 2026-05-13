@@ -78,6 +78,14 @@ The application will start on `http://localhost:5000`
 - Username: `root`
 - Password: `pass`
 
+## Live Demo
+
+Try the application live at: **[https://sveta2304.pythonanywhere.com/](https://sveta2304.pythonanywhere.com/)**
+
+Use the following credentials to log in:
+- **Username**: `root`
+- **Password**: `pass`
+
 ## Project Structure
 
 ```
