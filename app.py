@@ -14,6 +14,9 @@ app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False     # Sessions expire when the browser is closed
 app.config["SESSION_TYPE"] = "filesystem"     # Store session data in files
 
+# # Need key to avoid error: "RuntimeError: The session is unavailable because no secret key was set
+app.config["SECRET_KEY"] = "secret_key" 
+
 # Initialize Flask-Session
 Session(app)
 
@@ -24,8 +27,7 @@ Session(app)
 def index():
     # If no username in session, redirect to login
     if not session.get("name"):
-        return redirect("/login")
-    return render_template("index.html")
+        return render_template("login.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
